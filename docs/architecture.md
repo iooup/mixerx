@@ -109,6 +109,10 @@ introduction page separately, then includes it under `dist/client/mixerx/` in th
 same package. The worker serves it at `/mixerx/`; `/stage` retains the app fallback.
 Missing introduction assets never fall back to the Console document.
 
+The app fallback fetches the canonical `/` asset internally, without redirecting
+the browser away from `/stage` or dropping its session and display parameters.
+The introduction uses its canonical `/mixerx/` asset for the same reason.
+
 The Console and Stage use the shared policy in `scripts/csp.mjs`.
 The introduction website has a narrow, opt-in video exception in
 `mixerx/security.mjs` and a separate Vite build. Do not apply its relaxed

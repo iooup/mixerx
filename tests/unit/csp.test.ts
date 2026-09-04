@@ -45,7 +45,7 @@ describe("security policy", () => {
     expect(SECURITY_HEADERS["Cross-Origin-Embedder-Policy"]).toBe("require-corp");
   });
 
-  it("adds every header to a response and falls back to index.html for unknown HTML routes", async () => {
+  it("adds every header to a response and serves the canonical app document for unknown HTML routes", async () => {
     const decorated = withSecurityHeaders(
       new Response("ok", { status: 200, headers: { "content-type": "text/plain" } }),
     );
@@ -59,7 +59,7 @@ describe("security policy", () => {
       ASSETS: {
         fetch: async (request: Request) => {
           requests.push(new URL(request.url).pathname);
-          return new URL(request.url).pathname === "/index.html"
+          return new URL(request.url).pathname === "/"
             ? new Response("<html></html>", { status: 200 })
             : new Response("missing", { status: 404 });
         },
@@ -70,7 +70,7 @@ describe("security policy", () => {
       env,
     );
     expect(response.status).toBe(200);
-    expect(requests).toEqual(["/stage", "/index.html"]);
+    expect(requests).toEqual(["/stage", "/"]);
     const asset = await worker.fetch(
       new Request("https://app.local/missing.js", { headers: { accept: "*/*" } }),
       env,
@@ -91,7 +91,7 @@ describe("security policy", () => {
         },
       };
       const response = await worker.fetch(new Request(`https://app.local${route}?demo=1`), env);
-      expect(requests).toEqual(["https://app.local/mixerx/index.html?demo=1"]);
+      expect(requests).toEqual(["https://app.local/mixerx/?demo=1"]);
       expect(await response.text()).toBe("introduction");
       const expected = landingHeaders(PRODUCTION_CSP_HEADER);
       for (const [name, value] of Object.entries(expected)) {
@@ -131,7 +131,7 @@ describe("security policy", () => {
     );
     expect(response.status).toBe(404);
     expect(await response.text()).toBe("");
-    expect(requests).toEqual(["HEAD /mixerx/index.html"]);
+    expect(requests).toEqual(["HEAD /mixerx/"]);
   });
 
   it.each(["/mixerx/assets/missing.js", "/mixerx/missing"])(
@@ -179,5 +179,71 @@ describe("security policy", () => {
     expect(response.status).toBe(405);
     expect(requests).toEqual(["GET /", "GET /stage", "GET /mixerx/assets/main.js", "POST /mixerx/"]);
     expect(response.headers.get("Content-Security-Policy")).toBe(CSP_PLACEHOLDER);
+  });
+
+  it.each([
+    "/stage",
+    "/stage?demo=1",
+    "/stage?session=abc123def456",
+    "/stage?session=abc123def456&mode=display",
+  ])("serves %s without exposing the asset service's index.html redirect", async (route) => {
+    const requests: string[] = [];
+    const env = {
+      ASSETS: {
+        fetch: async (request: Request) => {
+          const url = new URL(request.url);
+          requests.push(url.pathname + url.search);
+          if (url.pathname === "/index.html") return Response.redirect("https://app.local/", 307);
+          if (url.pathname === "/")
+            return new Response("<html>app</html>", { headers: { "content-type": "text/html" } });
+          return new Response("missing", { status: 404 });
+        },
+      },
+    };
+    const request = new Request(`https://app.local${route}`, { headers: { accept: "text/html" } });
+    const response = await worker.fetch(request, env);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("location")).toBeNull();
+    expect(response.headers.get("content-type")).toBe("text/html");
+    expect(await response.text()).toBe("<html>app</html>");
+    expect(request.url).toBe(`https://app.local${route}`);
+    expect(requests).toEqual([route, "/"]);
+  });
+
+  it("preserves HEAD when serving the Stage's app document", async () => {
+    const requests: string[] = [];
+    const env = {
+      ASSETS: {
+        fetch: async (request: Request) => {
+          const pathname = new URL(request.url).pathname;
+          requests.push(`${request.method} ${pathname}`);
+          return new Response(null, { status: pathname === "/" ? 200 : 404 });
+        },
+      },
+    };
+    const response = await worker.fetch(
+      new Request("https://app.local/stage?demo=1", { method: "HEAD", headers: { accept: "text/html" } }),
+      env,
+    );
+    expect(response.status).toBe(200);
+    expect(await response.text()).toBe("");
+    expect(response.headers.get("location")).toBeNull();
+    expect(requests).toEqual(["HEAD /stage", "HEAD /"]);
+  });
+
+  it("serves the introduction without its index.html canonicalization redirect", async () => {
+    const env = {
+      ASSETS: {
+        fetch: async (request: Request) => {
+          const pathname = new URL(request.url).pathname;
+          if (pathname === "/mixerx/index.html") return Response.redirect("https://app.local/mixerx/", 307);
+          return new Response("introduction", { status: pathname === "/mixerx/" ? 200 : 404 });
+        },
+      },
+    };
+    const response = await worker.fetch(new Request("https://app.local/mixerx/"), env);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("location")).toBeNull();
+    expect(await response.text()).toBe("introduction");
   });
 });

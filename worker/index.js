@@ -42,7 +42,7 @@ export default {
       return withSecurityHeaders(Response.redirect(url, 308));
     }
     if (readRequest && ["/mixerx/", "/mixerx/index.html"].includes(url.pathname)) {
-      url.pathname = "/mixerx/index.html";
+      url.pathname = "/mixerx/";
       return withSecurityHeaders(await env.ASSETS.fetch(new Request(url, request)), true);
     }
 
@@ -54,7 +54,9 @@ export default {
     }
 
     const indexUrl = new URL(request.url);
-    indexUrl.pathname = "/index.html";
+    // The asset service redirects /index.html to /. Fetch the canonical asset
+    // internally so the browser keeps /stage and its session/display parameters.
+    indexUrl.pathname = "/";
     indexUrl.search = "";
     return withSecurityHeaders(await env.ASSETS.fetch(new Request(indexUrl, request)));
   },
