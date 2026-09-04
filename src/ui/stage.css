@@ -1,0 +1,1136 @@
+/* Stage window and Audience Display. Loaded with the stage chunk. */
+
+.stage {
+  --stage-top-h: 48px;
+  --stage-strip-h: 40px;
+  --stage-library-w: 248px;
+  --stage-director-w: 300px;
+  display: grid;
+  grid-template-rows: var(--stage-top-h) minmax(0, 1fr) var(--stage-strip-h);
+  grid-template-columns: var(--stage-library-w) minmax(0, 1fr) var(--stage-director-w);
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg);
+  direction: ltr;
+}
+
+.stage--display,
+.stage--connect {
+  display: block;
+  background: #000;
+}
+
+/* ---------- Output surface ---------- */
+
+.stage__output {
+  position: relative;
+  grid-row: 2;
+  grid-column: 2;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.stage--display .stage__output {
+  position: fixed;
+  inset: 0;
+}
+
+.stage__canvas,
+.crowd {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.crowd {
+  pointer-events: none;
+  --crowd-a: #ffa03c;
+  --crowd-b: #3fd5ff;
+  --crowd-accent: #ffffff;
+  --crowd-flash: 0;
+  --crowd-intensity: 1;
+  --limb-width: 10;
+  --limb-opacity: 1;
+}
+
+.crowd[hidden] {
+  display: none;
+}
+
+.crowd--pets {
+  image-rendering: pixelated;
+}
+
+.crowd-picker {
+  min-width: 0;
+  margin: 0 0 var(--sp-3);
+  padding: 0;
+  border: 0;
+}
+
+.crowd-picker legend {
+  padding: var(--sp-2) 0;
+  color: var(--text-2);
+  font-size: var(--fs-13);
+}
+
+.crowd-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.crowd-picker__option {
+  position: relative;
+  display: flex;
+  min-height: 87px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-panel);
+  background: var(--panel);
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: var(--fs-11);
+}
+
+.crowd-picker__option:hover {
+  background: var(--raised);
+}
+
+.crowd-picker__option[data-selected="true"] {
+  border-color: var(--onair);
+  color: var(--text);
+  background: rgb(91 235 138 / 0.07);
+}
+
+.crowd-picker__option:focus-within {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.crowd-picker__option input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.crowd-picker__portrait {
+  width: 48px;
+  height: 52px;
+  overflow: hidden;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.crowd-picker p {
+  margin: 8px 0 0;
+  color: var(--text-3);
+  font-size: var(--fs-11);
+  line-height: 1.6;
+}
+
+.crowd-picker__formation {
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  font-size: var(--fs-11);
+  color: var(--text-2);
+}
+
+.crowd-picker__formation summary {
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.crowd-picker__range {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  padding-top: 12px;
+}
+
+.crowd-picker__range input {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+  accent-color: var(--onair);
+}
+
+/* The crowd is lit by the scene: the fill is the palette's side colour, the rim is the accent. */
+.crowd__dancers {
+  filter: drop-shadow(0 0 var(--crowd-rim, 6px) color-mix(in srgb, var(--crowd-accent) 45%, transparent));
+}
+
+/* Floor reflection: the same dancers, mirrored, blurred and faint under the floor gradient. */
+.crowd__mirror {
+  opacity: var(--crowd-reflect, 0);
+  filter: blur(3px);
+}
+
+.crowd__mirror[data-on="false"] {
+  display: none;
+}
+
+.dancer__phone {
+  fill: color-mix(in srgb, #ffffff 70%, var(--crowd-accent));
+  filter: drop-shadow(0 0 8px var(--crowd-accent));
+}
+
+.dancer__cone {
+  fill: var(--crowd-accent);
+}
+
+.dancer__limb {
+  fill: none;
+  stroke: color-mix(in srgb, #ffffff calc(var(--crowd-flash) * 100%), var(--dancer));
+  stroke-width: var(--limb-width);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: var(--limb-opacity);
+}
+
+.dancer__head {
+  fill: color-mix(in srgb, #ffffff calc(var(--crowd-flash) * 100%), var(--dancer));
+  opacity: var(--limb-opacity);
+}
+
+.dancer {
+  --dancer: var(--crowd-a);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--dancer) 55%, transparent));
+}
+
+.dancer[data-side="b"] {
+  --dancer: var(--crowd-b);
+}
+
+.dancer--lead {
+  --dancer: var(--crowd-accent);
+}
+
+.crowd__ribbon {
+  fill: none;
+  stroke: var(--crowd-a);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px var(--crowd-a));
+}
+
+.crowd__ribbon--b {
+  stroke: var(--crowd-b);
+  filter: drop-shadow(0 0 8px var(--crowd-b));
+}
+
+.crowd__spark {
+  fill: var(--crowd-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dancer,
+  .crowd__dancers {
+    filter: none;
+  }
+
+  .crowd__mirror {
+    display: none;
+  }
+}
+
+.stage__nogpu {
+  position: absolute;
+  inset: auto var(--sp-4) var(--sp-4) var(--sp-4);
+  z-index: 2;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-panel);
+  background: rgb(17 19 24 / 0.85);
+  color: var(--text-2);
+  font-size: var(--fs-13);
+}
+
+.stage--display .stage__nogpu {
+  inset: auto var(--sp-3) var(--sp-3) auto;
+  font-size: var(--fs-11);
+}
+
+/* ---------- Display hint ---------- */
+
+.stage__hint {
+  position: fixed;
+  inset: auto 0 var(--sp-6) 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+}
+
+.stage__hint[data-visible="true"] {
+  opacity: 1;
+}
+
+.stage__hint span {
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: 999px;
+  background: rgb(17 19 24 / 0.8);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  letter-spacing: 0.06em;
+}
+
+.stage__hint kbd {
+  color: var(--text);
+}
+
+/* ---------- Top bar ---------- */
+
+.stage__top {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-width: 0;
+  padding: 0 var(--sp-3);
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.stage__title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-13);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.stage__status {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: center;
+  gap: var(--sp-2);
+  overflow: hidden;
+}
+
+.stage__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.stage__actions button[aria-pressed="true"] {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.stage__actions .stage__blackout[aria-pressed="true"] {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ---------- Scene library ---------- */
+
+/* The left column holds the scene library above the presets strip. */
+.stage__left {
+  display: grid;
+  grid-row: 2;
+  grid-column: 1;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.stage__library {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden auto;
+}
+
+/* ---------- Presets strip ---------- */
+
+.stage__presets {
+  display: grid;
+  gap: var(--sp-1);
+  max-height: 40vh;
+  padding: var(--sp-2) var(--sp-2) var(--sp-3);
+  overflow: hidden auto;
+  border-top: 1px solid var(--border);
+}
+
+.stage__presets-head {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stage__presets h2 {
+  padding: 0 var(--sp-1);
+}
+
+.stage__preset-save {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  height: 26px;
+  padding: 0 var(--sp-2);
+  font-size: var(--fs-11);
+}
+
+.stage__presets-empty {
+  padding: 0 var(--sp-1);
+  color: var(--text-3);
+  font-size: var(--fs-11);
+  line-height: 1.5;
+}
+
+.stage__preset-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage__preset {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px 24px;
+  gap: 2px;
+  align-items: center;
+}
+
+.stage__preset-apply {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  padding: 0 var(--sp-2);
+  font-size: var(--fs-11);
+  text-align: start;
+}
+
+.stage__preset-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stage__preset kbd {
+  color: var(--text-3);
+  font-size: 10px;
+}
+
+.stage__preset .icon-btn {
+  width: 24px;
+  height: 26px;
+  min-height: 26px;
+}
+
+.director__text {
+  width: 100%;
+  height: var(--h-ctl);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-13);
+}
+
+.stage__library h2,
+.stage__director h2 {
+  padding: var(--sp-3) var(--sp-3) var(--sp-2);
+}
+
+.scene-library__header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-bottom: var(--sp-2);
+  background: var(--panel);
+}
+
+.scene-library__header .segmented {
+  margin-inline: var(--sp-2);
+  display: flex;
+}
+
+.scene-library__header .segmented__btn {
+  flex: 1;
+  min-width: 0;
+  padding-inline: 5px;
+  font-size: var(--fs-11);
+}
+
+.director__hint {
+  margin: 0 var(--sp-3) var(--sp-2);
+  font-size: var(--fs-13);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.director__range-labels {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-2);
+  font-size: var(--fs-11);
+  margin-block: 6px 14px;
+}
+
+.director__details {
+  border-top: 1px solid var(--border);
+}
+
+.director__details > summary {
+  padding: 14px var(--sp-3);
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: var(--fs-13);
+}
+
+.director__details[open] > summary {
+  color: var(--text);
+}
+
+.director__details > summary:focus-visible {
+  outline: 2px solid var(--onair);
+  outline-offset: -3px;
+}
+
+.scene-library__hint {
+  margin: var(--sp-2) var(--sp-3) 0;
+  font-size: var(--fs-11);
+  color: var(--text-2);
+}
+
+.scene-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-1);
+  margin: 0 var(--sp-2) var(--sp-2);
+  padding: var(--sp-2);
+  min-height: auto;
+  text-align: left;
+  border-radius: var(--r-panel);
+  background: var(--raised);
+}
+
+.scene-card[aria-pressed="true"] {
+  border-color: var(--onair);
+}
+
+.scene-card[data-pending="true"] {
+  border-color: var(--warn);
+}
+
+.scene-card__thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--r-ctl);
+  background: #000;
+}
+
+.scene-card__title {
+  font-size: var(--fs-13);
+  font-weight: 600;
+}
+
+.scene-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  color: var(--text-3);
+}
+
+.scene-card__desc {
+  font-size: var(--fs-11);
+  color: var(--text-2);
+}
+
+/* ---------- Director panel ---------- */
+
+.stage__director {
+  grid-row: 2;
+  grid-column: 3;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden auto;
+  border-left: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.director__section {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.director__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-height: var(--h-ctl);
+}
+
+.director__row > span:first-child {
+  color: var(--text-2);
+}
+
+.director__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-height: var(--h-ctl);
+  cursor: pointer;
+}
+
+.director__toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--onair);
+}
+
+input.director__range {
+  width: 100%;
+  height: 24px;
+  appearance: none;
+  background: transparent;
+}
+
+input.director__range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+input.director__range::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 20px;
+  margin-top: -8px;
+  border-radius: 3px;
+  background: var(--text);
+}
+
+.director__colours {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.director__colours input {
+  width: 40px;
+  height: var(--h-ctl);
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctl);
+  background: var(--raised);
+}
+
+.director__readout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--sp-1) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  color: var(--text-2);
+}
+
+.director__readout dt {
+  color: var(--text-3);
+}
+
+.director__readout dd {
+  margin: 0;
+  color: var(--text);
+}
+
+/* ---------- Strip ---------- */
+
+.stage__strip {
+  grid-row: 3;
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  min-width: 0;
+  padding: 0 var(--sp-3);
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  font-family: var(--font-mono);
+  font-size: var(--fs-11);
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.stage__strip .onair__status {
+  font-family: var(--font-ui);
+  letter-spacing: 0;
+}
+
+.stage__strip .led--on {
+  box-shadow: none;
+}
+
+/* ---------- Connect panel ---------- */
+
+.stage-connect {
+  display: grid;
+  place-items: center;
+  height: 100dvh;
+  padding: var(--sp-6);
+  text-align: center;
+}
+
+.stage-connect__card {
+  display: grid;
+  gap: var(--sp-3);
+  width: min(460px, 100%);
+  padding: var(--sp-6);
+  border: 1px solid var(--border);
+  border-radius: var(--r-panel);
+  background: var(--panel);
+}
+
+.stage-connect__card h1 {
+  font-size: var(--fs-24);
+}
+
+.stage-connect__card p {
+  color: var(--text-2);
+}
+
+.stage-connect__actions {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+/* ---------- Screen picker ---------- */
+
+.screen-popover {
+  position: fixed;
+  inset: auto;
+  top: calc(var(--stage-top-h) + 4px);
+  right: var(--sp-3);
+  margin: 0;
+  min-width: 260px;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-panel);
+  background: var(--raised);
+  color: var(--text);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+}
+
+.screen-popover ul {
+  display: grid;
+  gap: var(--sp-2);
+  margin: var(--sp-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1279px) {
+  .stage {
+    --stage-library-w: 200px;
+    --stage-director-w: 260px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .stage__btn-text {
+    display: none;
+  }
+
+  .stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: var(--stage-top-h) minmax(0, 1fr) auto var(--stage-strip-h);
+  }
+
+  .stage__output {
+    grid-column: 1;
+  }
+
+  .stage__left,
+  .stage__director {
+    grid-row: 3;
+    grid-column: 1;
+    max-height: 200px;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .stage__director {
+    display: none;
+  }
+
+  .stage__left {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .stage__library {
+    flex-direction: row;
+    overflow: auto hidden;
+  }
+
+  /* On a narrow studio the presets live in the console's STAGE menu instead. */
+  .stage__presets {
+    display: none;
+  }
+
+  .scene-card {
+    flex: 0 0 180px;
+  }
+}
+
+/* ---------- Console additions ---------- */
+
+.stage-popover {
+  position: fixed;
+  inset: auto;
+  top: calc(var(--strip-h) + 4px);
+  right: var(--sp-3);
+  margin: 0;
+  min-width: 280px;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-panel);
+  background: var(--raised);
+  color: var(--text);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+}
+
+.stage-popover__actions {
+  display: grid;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.stage-popover__status {
+  color: var(--text-2);
+}
+
+.stage-preview {
+  view-transition-name: stage-preview;
+  position: fixed;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  z-index: 50;
+  width: 320px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-panel);
+  background: #000;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+  overflow: hidden;
+}
+
+.stage-preview__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-1) var(--sp-2);
+  background: var(--panel);
+}
+
+.stage-preview iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #000;
+}
+
+/* ---------- Face scene (SVG layer) ---------- */
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  --face-a: #ffa03c;
+  --face-b: #3fd5ff;
+  --face-accent: #ffffff;
+  --face-flash: 0;
+  --face-glow: 1;
+  --face-stroke: 14;
+}
+
+.face[data-visible="true"] {
+  opacity: 1;
+}
+
+.face__outline,
+.face__brow,
+.face__nose,
+.face__mouth {
+  fill: none;
+  stroke: color-mix(in srgb, #ffffff calc(var(--face-flash) * 100%), var(--face-accent));
+  stroke-width: var(--face-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.face__outline {
+  fill: rgb(0 0 0 / 0.35);
+  filter: drop-shadow(0 0 18px color-mix(in srgb, var(--face-accent) 50%, transparent));
+}
+
+.face__mouth {
+  fill: color-mix(in srgb, var(--face-b) 70%, #000);
+}
+
+.face__eye {
+  fill: var(--face-a);
+  filter: drop-shadow(0 0 14px var(--face-a));
+}
+
+.face__eye--b {
+  fill: var(--face-b);
+  filter: drop-shadow(0 0 14px var(--face-b));
+}
+
+.face__pupil {
+  fill: #0b0c0e;
+}
+
+.face__brow--b {
+  stroke: color-mix(in srgb, #ffffff calc(var(--face-flash) * 100%), var(--face-accent));
+}
+
+.face__cheek {
+  fill: var(--face-a);
+  filter: blur(18px);
+}
+
+.face__cheek--b {
+  fill: var(--face-b);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face__outline,
+  .face__eye,
+  .face__eye--b {
+    filter: none;
+  }
+}
+
+/* ---------- Now-playing lower third ---------- */
+
+.lower-third {
+  position: absolute;
+  overflow: hidden;
+  /* Above every layer: the audience must be able to read the name of the record. */
+  inset-inline-start: clamp(16px, 4vmin, 56px);
+  bottom: clamp(16px, 6vmin, 72px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vmin, 20px);
+  max-width: min(72%, 900px);
+  padding: clamp(8px, 1.2vmin, 16px) clamp(12px, 1.8vmin, 22px);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: clamp(6px, 0.9vmin, 12px);
+  background: rgb(8 9 11 / 0.62);
+  opacity: var(--lt, 0);
+  transform: translateY(calc((1 - var(--lt, 0)) * 24px));
+  pointer-events: none;
+}
+
+/* A hairline in the on-air deck's colour: which side of the mixer the audience is hearing. */
+.lower-third::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -1px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--deck-a);
+}
+
+.lower-third[data-deck="B"]::before {
+  background: var(--deck-b);
+}
+
+.lower-third[data-visible="false"] {
+  visibility: hidden;
+}
+
+.lower-third__art {
+  flex: none;
+  width: clamp(40px, 6vmin, 76px);
+  height: clamp(40px, 6vmin, 76px);
+  border-radius: clamp(3px, 0.5vmin, 6px);
+  object-fit: cover;
+  background: #14161b;
+}
+
+.lower-third__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.lower-third__title {
+  overflow: hidden;
+  font-size: clamp(17px, 2.6vmin, 34px);
+  font-weight: 600;
+  line-height: 1.15;
+  color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lower-third__artist {
+  overflow: hidden;
+  font-size: clamp(12px, 1.5vmin, 19px);
+  color: rgb(255 255 255 / 0.66);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lower-third__meta {
+  display: flex;
+  flex: none;
+  gap: clamp(6px, 0.9vmin, 12px);
+  align-items: center;
+  margin-inline-start: auto;
+}
+
+.lower-third__chip {
+  padding: 2px clamp(6px, 0.8vmin, 10px);
+  border: 1px solid hsl(var(--chip-hue, 210) 70% 62% / 0.55);
+  border-radius: 999px;
+  font-size: clamp(11px, 1.3vmin, 16px);
+  font-variant-numeric: tabular-nums;
+  color: hsl(var(--chip-hue, 210) 80% 76%);
+  background: hsl(var(--chip-hue, 210) 70% 50% / 0.16);
+  white-space: nowrap;
+}
+
+.lower-third__bpm {
+  font-size: clamp(11px, 1.3vmin, 16px);
+  color: rgb(255 255 255 / 0.6);
+  white-space: nowrap;
+}
+
+/* ---------- Idle mode ---------- */
+
+.idle {
+  position: absolute;
+  inset: 0;
+  /* Above the crowd and the face: the clock is what idle mode is for. */
+  z-index: 4;
+  display: grid;
+  gap: clamp(4px, 0.8vmin, 12px);
+  place-content: center;
+  place-items: center;
+  opacity: var(--idle, 0);
+  transform: translate(var(--idle-x, 0), var(--idle-y, 0));
+  pointer-events: none;
+}
+
+.idle[data-visible="false"] {
+  visibility: hidden;
+}
+
+.idle__clock {
+  font-size: clamp(48px, 13vmin, 190px);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: rgb(255 255 255 / 0.5);
+  letter-spacing: 0.02em;
+}
+
+.idle__event {
+  font-size: clamp(12px, 1.8vmin, 24px);
+  color: rgb(255 255 255 / 0.36);
+  text-align: center;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lower-third {
+    transform: none;
+  }
+
+  .idle {
+    transform: none;
+  }
+}
+
+.stage-popover__presets {
+  display: grid;
+  gap: var(--sp-1);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border);
+}
+
+/* ---------- Night sky ---------- */
+
+.night-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: var(--sky, 0);
+  pointer-events: none;
+}
+
+.night-sky[data-visible="false"] {
+  visibility: hidden;
+}
+
+.night-sky__path {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.16);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.night-sky__star {
+  fill: rgb(255 255 255 / 0.8);
+}
+
+.night-sky__star--now {
+  filter: drop-shadow(0 0 10px currentcolor);
+}

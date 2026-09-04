@@ -1,0 +1,42 @@
+Mixerx
+Copyright (c) 2026 Ayob (ayob8986@gmail.com)
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see <https://www.gnu.org/licenses/>.
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+
+DUAL LICENSING
+--------------
+
+Mixerx is dual-licensed. The copyright holder retains full ownership of the
+work and offers it under two separate terms:
+
+  1. The GNU Affero General Public License v3.0 or later (this repository), for
+     open source use. If you run a modified version of Mixerx and let others
+     interact with it over a network, AGPL section 13 requires you to offer
+     those users the corresponding source of your modified version.
+
+  2. A separate commercial license, for anyone who wants to use, embed or host
+     Mixerx (or a derivative of it) without the obligations of the AGPL — for
+     example in a proprietary product, a closed-source hosted service, a game,
+     or a training platform.
+
+To enquire about a commercial license, contact ayob8986@gmail.com.
+
+
+THIRD-PARTY MATERIAL
+--------------------
+
+This project bundles third-party software and assets under their own licenses.
+See THIRD-PARTY-NOTICES.md for the full list and the applicable notices.

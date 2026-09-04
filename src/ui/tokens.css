@@ -1,0 +1,55 @@
+/* Obsidian design tokens. Single identity, no themes. */
+:root {
+  --bg: #0b0c0e;
+  --panel: #111318;
+  --raised: #181b21;
+  --border: #22262e;
+  --hover: #2b303a;
+
+  --text: #edeff3;
+  --text-2: #a7aebb;
+  --text-3: #7d8590;
+
+  --deck-a: #ffa03c;
+  --deck-b: #3fd5ff;
+  --onair: #5beb8a;
+  --agent: #b693ff;
+  --warn: #ffc857;
+  --danger: #ff4d4d;
+
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-ui: var(--font-sans);
+
+  --fs-11: 11px;
+  --fs-13: 13px;
+  --fs-15: 15px;
+  --fs-18: 18px;
+  --fs-24: 24px;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  --r-ctl: 4px;
+  --r-panel: 8px;
+
+  --h-ctl: 32px;
+  --h-touch: 44px;
+  --strip-h: 56px;
+  --rail-w: 360px;
+  --rail-w-collapsed: 48px;
+
+  --dur: 150ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --focus: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+  }
+}

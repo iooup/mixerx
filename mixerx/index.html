@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#07060d">
+    <meta
+      name="description"
+      content="Mixerx: a two-deck DJ mixer and a music-reactive visual stage in one browser tab, played by you and your AI DJ agent at the same time through WebMCP. Local-first, zero uploads."
+    >
+    <meta property="og:title" content="Mixerx — a browser DJ mixer with live visuals and an AI agent">
+    <meta
+      property="og:description"
+      content="Two decks, a music-reactive visual stage and an AI DJ agent, in one browser tab. Nothing is uploaded, nothing is installed."
+    >
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mixerx — a browser DJ mixer with live visuals and an AI agent">
+    <meta
+      name="twitter:description"
+      content="Two decks, a WebGPU stage and 13 WebMCP tools. You and your AI DJ agent, same tab, same beat."
+    >
+    <link rel="icon" type="image/svg+xml" href="./mark.svg">
+    <link rel="stylesheet" href="./style.css">
+    <title>Mixerx — a browser DJ mixer with live visuals and an AI agent</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to the good stuff</a>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="logo" href="#top" aria-label="Mixerx home">
+          <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+            <rect width="40" height="40" rx="11" fill="#c8ff3d" />
+            <path d="M11 11l18 18M29 11L11 29" stroke="#07060d" stroke-width="6" stroke-linecap="round" />
+            <circle cx="31" cy="9" r="5" fill="#ff3fa4" />
+          </svg>
+          <span class="logo-word">mixer<b>x</b></span>
+          <span class="logo-tag">alpha</span>
+        </a>
+        <nav class="topnav" aria-label="Sections">
+          <a href="#duo">2-in-1</a><a href="#copilot">AI DJ agent</a><a href="#webmcp">WebMCP</a
+          ><a href="#features">Features</a><a href="#horizon">Roadmap</a
+          ><a href="#three">3-in-1</a><a href="#faq">FAQ</a>
+        </nav>
+        <div class="topbar-actions">
+          <button id="motion-toggle" class="chip-button" type="button" aria-pressed="false">
+            <span class="motion-icon" aria-hidden="true">⏸</span><span class="motion-label">Pause motion</span>
+          </button>
+          <a class="btn btn-lime btn-sm" href="/">Open Mixerx <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ───────────────────────── HERO ───────────────────────── -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="wrap hero-grid">
+          <div class="hero-copy" data-reveal>
+            <p class="sticker sticker-lime hero-sticker">
+              <span aria-hidden="true">🎧</span> TWO DECKS + LIVE VISUALS + AN AI DJ AGENT. ONE TAB.
+            </p>
+            <h1 id="hero-title">
+              A DJ mixer.<br><span class="outline">Live</span> visuals.<br><span class="grad-text"
+                >AI optional.</span
+              >
+            </h1>
+            <p class="lede">
+              Mixerx is a <strong>2-in-1</strong> browser instrument: a real two-deck DJ mixer and a
+              music-reactive visual stage. You play it. Your AI DJ agent plays it <em>with</em> you, through
+              WebMCP, in the same tab, on the same beat. Nothing is uploaded, nothing is installed.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-lime" href="/">Open Mixerx <span aria-hidden="true">↗</span></a
+              ><a class="btn btn-ghost" href="/stage?demo=1">Peek at the Stage demo</a
+              ><a class="link-arrow" href="#duo">How it works <span aria-hidden="true">↓</span></a>
+            </div>
+            <p class="footnote mobile-note">
+              Best on a desktop Chromium browser. On a phone, the app shows a notice instead of the console.
+            </p>
+            <ul class="hero-facts" aria-label="Quick facts">
+              <li><b>13</b> agent tools</li>
+              <li><b>0</b> uploads, ever</li>
+              <li><b>2</b> sample-accurate decks</li>
+              <li><b>16</b> stage looks, 4 of them cinematic</li>
+            </ul>
+          </div>
+
+          <div class="hero-art" id="hero-art">
+            <div class="art-frame">
+              <div class="art-topline">
+                <span class="mono"><i class="dot dot-lime"></i> REAL CAPTURES · ALPHA BUILD</span>
+                <div class="art-tabs" id="hero-tabs" role="tablist" aria-label="Which face of Mixerx to show">
+                  <button
+                    class="art-tab"
+                    id="tab-mixer"
+                    type="button"
+                    role="tab"
+                    data-face="mixer"
+                    aria-selected="true"
+                    aria-controls="panel-mixer"
+                  >
+                    <span aria-hidden="true">🎛️</span> Mixer
+                  </button>
+                  <button
+                    class="art-tab"
+                    id="tab-visuals"
+                    type="button"
+                    role="tab"
+                    data-face="visuals"
+                    aria-selected="false"
+                    aria-controls="panel-visuals"
+                    tabindex="-1"
+                  >
+                    <span aria-hidden="true">🪩</span> Visuals
+                  </button>
+                </div>
+              </div>
+              <figure class="hero-shot">
+                <div class="hero-stack">
+                  <div
+                    class="hero-panel"
+                    id="panel-mixer"
+                    role="tabpanel"
+                    aria-labelledby="tab-mixer"
+                    data-face="mixer"
+                    data-on
+                  >
+                    <img
+                      class="hero-face"
+                      src="./shots/console-proposal.webp"
+                      width="2000"
+                      height="1250"
+                      alt="The Mixerx console: Neon Drift playing on deck A, Glass Tide analysed on deck B, the mixer in the middle, and a proposal card from the AI DJ agent reading “Arm: B enters at bar 17 of A” with its reasons"
+                      decoding="async"
+                      fetchpriority="high"
+                      data-eager
+                    >
+                  </div>
+                  <div
+                    class="hero-panel"
+                    id="panel-visuals"
+                    role="tabpanel"
+                    aria-labelledby="tab-visuals"
+                    data-face="visuals"
+                  >
+                    <img
+                      class="hero-face"
+                      src="./shots/stage-cinematic.webp"
+                      width="1440"
+                      height="900"
+                      alt="The Mixerx visuals studio: the cinematic scene library on the left, the Night Phoenix world filling the output — a blue and violet phoenix rising over a moonlit temple — and the Director panel with one intensity control on the right"
+                      decoding="async"
+                      data-eager
+                    >
+                  </div>
+                </div>
+                <figcaption class="mono" id="hero-caption">CONSOLE · MIX MODE · DEMO TRACKS WRITTEN BY THE PAGE</figcaption>
+              </figure>
+              <span class="sticker sticker-magenta art-sticker">2 in 1</span>
+              <span class="sticker sticker-violet art-sticker-2"><span aria-hidden="true">🤖</span> AI DJ AGENT ON MIXER</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── ALPHA DEMO ───────────────────────── -->
+      <section class="demo-section wrap" id="demo" aria-labelledby="demo-title">
+        <div class="demo-heading">
+          <div>
+            <p class="eyebrow">ALPHA DEMO</p>
+            <h2 id="demo-title">Watch Mixerx <span class="grad-text">in action.</span></h2>
+          </div>
+          <a class="link-arrow" href="https://youtu.be/OTJsOIhV-zM" target="_blank" rel="noopener noreferrer">
+            Watch on YouTube <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div class="demo-player" id="demo-player">
+          <a
+            class="demo-play"
+            id="demo-play"
+            href="https://youtu.be/OTJsOIhV-zM"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-describedby="demo-privacy"
+          >
+            <span class="demo-play-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+            </span>
+            <span>Play the alpha demo</span>
+          </a>
+        </div>
+        <p class="demo-note" id="demo-privacy">Hosted on YouTube. The player connects only when you press play.</p>
+      </section>
+
+      <div class="ticker" role="group" aria-label="Two decks, sixteen stage looks, thirteen agent tools, zero uploads">
+        <div class="ticker-track" aria-hidden="true">
+          <span>2 DECKS</span><i>✦</i><span>16 STAGE LOOKS</span><i>✦</i><span>13 WEBMCP TOOLS</span
+          ><i>✦</i><span>0 UPLOADS</span><i>✦</i><span>WEBGPU VISUALS</span><i>✦</i><span>YOUR HANDS ON THE FADER</span
+          ><i>✦</i><span>2 DECKS</span><i>✦</i><span>16 STAGE LOOKS</span><i>✦</i><span>13 WEBMCP TOOLS</span
+          ><i>✦</i><span>0 UPLOADS</span><i>✦</i><span>WEBGPU VISUALS</span><i>✦</i><span>YOUR HANDS ON THE FADER</span
+          ><i>✦</i>
+        </div>
+      </div>
+
+      <!-- ───────────────────────── 2-IN-1 ───────────────────────── -->
+      <section class="section wrap" id="duo" aria-labelledby="duo-title">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">01 / THE 2-IN-1</p>
+          <h2 id="duo-title">The mixer and the visuals, <span class="grad-text">one session.</span>&nbsp;<span aria-hidden="true">🎭</span></h2>
+          <p class="section-lede">
+            One session, one clock, one set of controls — not a player with a screensaver bolted on.
+            Here's what each face does.
+          </p>
+        </div>
+
+        <div class="duo-grid">
+          <article class="card card-lime" data-reveal>
+            <p class="card-kicker"><span aria-hidden="true">🎛️</span> FACE 01 — THE MIXER</p>
+            <h3>A real audio engine, not a player.</h3>
+            <p>
+              Sample-accurate transport on AudioWorklets. Beat grids, keys and song sections are analysed
+              <em>on your machine</em>, so every blend lands on the phrase.
+            </p>
+            <ul class="check-list">
+              <li>3-band EQ with kills, filter, CUE, limiter</li>
+              <li>Hot cues, loops, beat jump, pads, nudge</li>
+              <li>Filters that find the next track: key, tempo ±6 %, energy</li>
+              <li>LEARN lessons, and Web MIDI with soft takeover</li>
+            </ul>
+          </article>
+          <article class="card card-magenta" data-reveal>
+            <p class="card-kicker"><span aria-hidden="true">🪩</span> FACE 02 — THE STAGE</p>
+            <h3>Visuals that follow the track.</h3>
+            <p>
+              A WebGPU stage that reads the music and your hands: the drop is telegraphed four bars ahead, a
+              LOW kill drops the floor, a filter sweep blurs the scene.
+            </p>
+            <ul class="check-list">
+              <li>16 looks: 8 classic, 4 line studies, 4 cinematic worlds</li>
+              <li>A crowd that dances, and raises phones in the breaks</li>
+              <li>Presets on Shift+1…9: four to start, nine slots of your own</li>
+              <li>An audience display on any screen, with blackout, strobe safety and reduced motion</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── AI DJ AGENT ───────────────────────── -->
+      <section class="section band band-violet" id="copilot" aria-labelledby="copilot-title">
+        <div class="wrap">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow eyebrow-violet">02 / YOU + AI, BACK TO BACK</p>
+            <h2 id="copilot-title">
+              Your AI DJ agent gets <span class="grad-text">tools, not a chat box.</span>&nbsp;<span aria-hidden="true">🤝</span>
+            </h2>
+            <p class="section-lede">
+              The agent doesn't get a chat box in the corner. It gets <strong>tools</strong>: the same session
+              you see, the same proposals, the same activity log. It can read structure and prepare the next
+              move. Below the Co-DJ level, anything the crowd would hear asks you first. Every agent action
+              has a
+              one-tap undo.
+            </p>
+          </div>
+
+          <div class="copilot-grid">
+            <div class="board" data-reveal>
+              <div class="board-head">
+                <span class="mono">WHO MAY DO WHAT</span>
+                <p class="board-hint">Pick a mode and an autonomy level. Watch the tool board change.</p>
+              </div>
+              <div class="board-controls">
+                <div class="segmented" role="group" aria-label="Session mode">
+                  <button type="button" data-mode="learn" aria-pressed="false">Learn</button
+                  ><button type="button" data-mode="mix" aria-pressed="true">Mix</button
+                  ><button type="button" data-mode="perform" aria-pressed="false">Perform</button>
+                </div>
+                <div class="segmented" role="group" aria-label="Autonomy level">
+                  <button type="button" data-autonomy="observe" aria-pressed="false">Observe</button
+                  ><button type="button" data-autonomy="prepare" aria-pressed="true">Prepare</button
+                  ><button type="button" data-autonomy="copilot" aria-pressed="false">Co-DJ</button>
+                </div>
+              </div>
+              <p class="board-summary mono" id="board-summary" role="status" aria-live="polite"></p>
+              <ul class="tool-board" id="tool-board" aria-label="WebMCP tools">
+                <li data-tool="get-session" data-access="read"><code>get-session</code><span>the whole session, redacted</span></li>
+                <li data-tool="search-library" data-access="read"><code>search-library</code><span>BPM, key, energy, fit</span></li>
+                <li data-tool="get-track" data-access="read"><code>get-track</code><span>one track's full analysis</span></li>
+                <li data-tool="propose-transition" data-access="read"><code>propose-transition</code><span>entry bar, blend, EQ moves</span></li>
+                <li data-tool="plan-set" data-access="read"><code>plan-set</code><span>an energy arc with reasons</span></li>
+                <li data-tool="propose-scene" data-access="read"><code>propose-scene</code><span>a look for this section</span></li>
+                <li data-tool="load-deck" data-access="prepare"><code>load-deck</code><span>stopped decks only</span></li>
+                <li data-tool="set-queue" data-access="prepare"><code>set-queue</code><span>reorder what's next</span></li>
+                <li data-tool="preview-cue" data-access="prepare"><code>preview-cue</code><span>headphones only</span></li>
+                <li data-tool="arm-transition" data-access="act"><code>arm-transition</code><span>B enters on the chosen bar</span></li>
+                <li data-tool="enter-deck" data-access="act"><code>enter-deck</code><span>start on the next bar 1</span></li>
+                <li data-tool="apply-scene" data-access="act"><code>apply-scene</code><span>switch the stage look</span></li>
+                <li data-tool="apply-preset" data-access="act"><code>apply-preset</code><span>one of the DJ's presets</span></li>
+              </ul>
+              <div class="legend mono">
+                <span><i class="swatch swatch-runs"></i> runs on its own</span>
+                <span><i class="swatch swatch-asks"></i> becomes a proposal · asks you</span>
+                <span><i class="swatch swatch-hidden"></i> not registered in this mode</span>
+              </div>
+              <p class="footnote">
+                Same tool, same schema, same arguments at every level. Below the level a tool needs, the call
+                doesn't fail: it turns into a card you accept or dismiss. The crossfader, the EQ and the on-air
+                deck are never on the menu.
+              </p>
+            </div>
+
+            <div class="chat" data-reveal>
+              <div class="chat-head">
+                <span class="agent-glyph" aria-hidden="true">✦</span>
+                <div><strong>THE PROPOSAL LOOP</strong><span>scripted walkthrough · not a live agent</span></div>
+                <button id="chat-run" class="btn btn-violet btn-sm" type="button">Ask the AI DJ agent <span aria-hidden="true">✨</span></button>
+              </div>
+              <div class="bubble bubble-you">
+                “Something smoother next. Keep the energy up.” <span class="mono">YOU</span>
+              </div>
+              <ol class="trace" aria-label="Example tool calls">
+                <li data-step="1"><code>get-session</code><span>A on air · drop ends in 7 bars · B loaded and analysed</span></li>
+                <li data-step="2"><code>search-library</code><span>keyCompatible + tempoWindow → best fit: Glass Tide (8B, +3.1 %)</span></li>
+                <li data-step="3"><code>propose-transition</code><span>entry bar 17 · blend 8 bars · next phrase boundary</span></li>
+                <li data-step="4"><code>arm-transition</code><span>below the Co-DJ level → <b>proposed</b>, waiting for you</span></li>
+              </ol>
+              <div class="proposal" id="proposal-card" hidden>
+                <div class="proposal-head"><strong>Arm: B enters at bar 17 of A</strong><span class="mono">agent</span></div>
+                <ul class="proposal-reasons mono">
+                  <li>entry at bar 17 (next phrase boundary)</li>
+                  <li>B body = 8 bars → blend 8</li>
+                  <li>key 8A → 8B (relative)</li>
+                  <li>tempo +3.1 %</li>
+                  <li>energy 8 → 8</li>
+                </ul>
+                <div class="proposal-actions">
+                  <button id="proposal-accept" class="btn btn-lime btn-sm" type="button">Arm <span aria-hidden="true">✓</span></button
+                  ><button id="proposal-dismiss" class="chip-button" type="button">Dismiss</button
+                  ><button id="proposal-undo" class="chip-button" type="button" hidden>Undo · cancel B entry</button>
+                </div>
+              </div>
+              <p class="chat-status mono" id="proposal-status" role="status" aria-live="polite">
+                Press “Ask the AI DJ agent” to run the example. Nothing real changes.
+              </p>
+              <button id="proposal-reset" class="chip-button" type="button" hidden>Run it again</button>
+              <p class="footnote">
+                The card mirrors the real one below, reason for reason. In the app the activity log records
+                <code>confirmedBy: "user"</code>; refusing the agent is a design decision, not an error path.
+              </p>
+            </div>
+          </div>
+
+          <div class="levels" data-reveal>
+            <div class="level">
+              <span class="mono">LEVEL 01</span>
+              <h3>Observe <span aria-hidden="true">👀</span></h3>
+              <p>Reads, searches and proposes. Everything else asks you.</p>
+            </div>
+            <span class="level-arrow" aria-hidden="true">→</span>
+            <div class="level">
+              <span class="mono">LEVEL 02</span>
+              <h3>Prepare <span aria-hidden="true">🧰</span></h3>
+              <p>May load a stopped deck, reorder the queue and preview on CUE. Anything audible asks you.</p>
+            </div>
+            <span class="level-arrow" aria-hidden="true">→</span>
+            <div class="level">
+              <span class="mono">LEVEL 03</span>
+              <h3>Co-DJ <span aria-hidden="true">🚀</span></h3>
+              <p>May also arm transitions and start the other deck on bar 1. Never the crossfader, the EQ or the on-air deck.</p>
+            </div>
+          </div>
+
+          <section class="prompt-lab" aria-labelledby="prompt-lab-title" data-reveal>
+            <div class="prompt-lab-head">
+              <div>
+                <p class="card-kicker">TRY IT WITH YOUR AGENT</p>
+                <h3 id="prompt-lab-title">Three prompts. Thirteen tools. One live session.</h3>
+                <p>Open Mixerx, then copy one of these prompts into your browser agent.</p>
+              </div>
+              <a class="btn btn-violet btn-sm" href="/">Open Mixerx <span aria-hidden="true">↗</span></a>
+            </div>
+
+            <div class="prompt-grid">
+              <article class="prompt-card" data-prompt-example data-level="observe">
+                <span class="prompt-level mono">OBSERVE</span>
+                <p class="prompt-text" id="prompt-observe">
+                  Analyze the live session and show the three tracks most compatible with the on-air track.
+                </p>
+                <p class="prompt-tools mono">
+                  <code>get-session</code><span aria-hidden="true">→</span><code>search-library</code>
+                </p>
+                <button
+                  class="chip-button prompt-copy"
+                  type="button"
+                  data-copy-prompt="prompt-observe"
+                  data-prompt-name="Observe prompt"
+                  aria-describedby="prompt-observe"
+                >Copy prompt <span aria-hidden="true">⧉</span></button>
+              </article>
+
+              <article class="prompt-card" data-prompt-example data-level="prepare">
+                <span class="prompt-level mono">PREPARE</span>
+                <p class="prompt-text" id="prompt-prepare">
+                  Build a five-track rising-energy queue using BPM, key, and energy compatibility.
+                </p>
+                <p class="prompt-tools mono">
+                  <code>get-session</code><span aria-hidden="true">→</span><code>search-library</code
+                  ><span aria-hidden="true">→</span><code>plan-set</code><span aria-hidden="true">→</span
+                  ><code>set-queue</code>
+                </p>
+                <button
+                  class="chip-button prompt-copy"
+                  type="button"
+                  data-copy-prompt="prompt-prepare"
+                  data-prompt-name="Prepare prompt"
+                  aria-describedby="prompt-prepare"
+                >Copy prompt <span aria-hidden="true">⧉</span></button>
+              </article>
+
+              <article class="prompt-card" data-prompt-example data-level="copilot">
+                <span class="prompt-level mono">CO-DJ</span>
+                <p class="prompt-text" id="prompt-codj">
+                  Choose the best next track, prepare a phrase-aligned transition, and apply a Stage scene for the upcoming drop.
+                </p>
+                <p class="prompt-tools mono">
+                  <code>get-session</code><span aria-hidden="true">→</span><code>search-library</code
+                  ><span aria-hidden="true">→</span><code>load-deck</code><span aria-hidden="true">→</span
+                  ><code>propose-transition</code><span aria-hidden="true">→</span><code>arm-transition</code
+                  ><span aria-hidden="true">→</span><code>propose-scene</code><span aria-hidden="true">→</span
+                  ><code>apply-scene</code>
+                </p>
+                <button
+                  class="chip-button prompt-copy"
+                  type="button"
+                  data-copy-prompt="prompt-codj"
+                  data-prompt-name="Co-DJ prompt"
+                  aria-describedby="prompt-codj"
+                >Copy prompt <span aria-hidden="true">⧉</span></button>
+              </article>
+            </div>
+
+            <p class="prompt-copy-status mono" id="prompt-copy-status" role="status" aria-live="polite">
+              Choose a prompt and copy it into your browser agent.
+            </p>
+          </section>
+
+          <div class="proof" data-reveal>
+            <img
+              class="proof-shot"
+              src="./shots/agent-rail.webp"
+              width="720"
+              height="1128"
+              alt="The AI DJ agent’s rail captured from the alpha: the autonomy switch on Prepare, a proposal card “Arm: B enters at bar 17 of A” with five reasons and Arm/Dismiss buttons, and the activity log entry for arm-transition"
+              loading="lazy"
+              decoding="async"
+            >
+            <div class="proof-copy">
+              <p class="card-kicker"><span aria-hidden="true">📸</span> THE REAL RAIL, CAPTURED FROM THE ALPHA</p>
+              <h3>This is what a proposal looks like.</h3>
+              <ul class="check-list">
+                <li>Autonomy on Prepare: the hint under the switch spells out what the agent may do on its own.</li>
+                <li>The card carries the plan and its reasons: entry bar, blend length, key relation, tempo delta, energy.</li>
+                <li>The activity log records the tool, the caller, the timing and the outcome. Nothing happens off the record.</li>
+                <li>The session: Neon Drift (8A) into Glass Tide (8B), the two demo tracks the page writes itself.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── WHY WEBMCP ───────────────────────── -->
+      <section class="section wrap" id="webmcp" aria-labelledby="webmcp-title">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">
+            03 / WHY WEBMCP
+            <img
+              class="inline-badge"
+              src="./shots/agent-badge.webp"
+              width="236"
+              height="54"
+              alt="The console header badge reading WebMCP, a check mark and 13"
+              loading="lazy"
+              decoding="async"
+            >
+          </p>
+          <h2 id="webmcp-title">Why WebMCP: the agent has to be <span class="grad-text">in this tab.</span>&nbsp;<span aria-hidden="true">🪩</span></h2>
+          <p class="section-lede">
+            WebMCP lets a web page hand structured tools to a browser agent. For most apps that's a
+            convenience. For a DJ instrument it's the <em>only</em> way this works, and here's why.
+          </p>
+        </div>
+
+        <div class="why-grid">
+          <article class="why" data-reveal>
+            <span class="why-num mono">01</span>
+            <h3>The instrument lives in the page.</h3>
+            <p>
+              The audio graph runs on an AudioWorklet, on the audio thread of <em>this</em> tab. A server has
+              no address for it. The agent has to be where the decks are.
+            </p>
+          </article>
+          <article class="why" data-reveal>
+            <span class="why-num mono">02</span>
+            <h3>The timing window is milliseconds wide.</h3>
+            <p>
+              The next bar boundary exists for a few milliseconds. A network round trip would arrive after
+              the beat. The tools return structure; the browser executes the timing, sample-accurate.
+            </p>
+          </article>
+          <article class="why" data-reveal>
+            <span class="why-num mono">03</span>
+            <h3>Your files never leave the browser.</h3>
+            <p>
+              Your tracks open through the File System Access API and are never uploaded. A cloud agent
+              would have nothing to analyse. A page agent gets BPM, key, energy and sections — no file
+              paths, no URLs, no audio, and track titles flagged as untrusted content.
+            </p>
+          </article>
+          <article class="why" data-reveal>
+            <span class="why-num mono">04</span>
+            <h3>You and the agent see one session.</h3>
+            <p>
+              This is visual collaboration, not remote control. The agent's proposal is a card on your
+              console. Its call is a line in your activity log. You both look at the same waveform.
+            </p>
+          </article>
+        </div>
+
+        <p class="footnote" data-reveal>
+          WebMCP is an experimental Community Group draft, not a finished W3C standard. Mixerx runs with it
+          in Chrome (WebMCP enabled) and in ChatGPT's in-app browser. The manual controls and the local AI
+          DJ agent don't need it.
+          <a href="https://developer.chrome.com/docs/ai/webmcp" target="_blank" rel="noopener noreferrer">Chrome's WebMCP guide ↗</a>
+          <a href="https://webmachinelearning.github.io/webmcp/" target="_blank" rel="noopener noreferrer">The draft ↗</a>
+        </p>
+      </section>
+
+      <!-- ───────────────────────── FEATURES ───────────────────────── -->
+      <section class="section band band-ink" id="features" aria-labelledby="features-title">
+        <div class="wrap">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow">04 / WHAT IT DOES TODAY</p>
+            <h2 id="features-title">What the app <span class="grad-text">does today.</span>&nbsp;<span aria-hidden="true">📦</span></h2>
+            <p class="section-lede">Every picture is a capture of the alpha, not a mock-up. Everything here exists today.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img class="art-top" src="./shots/deck-a.webp" width="790" height="1128" alt="Deck A: Neon Drift at 124.9 BPM in 8A, the overview waveform with section colours, the zoomed waveform with the beat grid, the tempo fader and the CUE, PLAYING, SYNC and ENTER buttons" loading="lazy" decoding="async"></div>
+              <h3>Two decks, real waveforms <span aria-hidden="true">🎚️</span></h3>
+              <p>AudioWorklet decks with sample-accurate transport, sync, a pitch fader, nudge and a phase meter. The engine is the only source of time; nothing animates that it did not do.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img class="art-top" src="./shots/mixer.webp" width="500" height="1128" alt="The mixer panel: MASTER and CUE knobs, trims, HI, MID, LOW and FILTER knobs for both channels, the CUE mix, channel faders with meters and the crossfader with its Equal power curve" loading="lazy" decoding="async"></div>
+              <h3>A full mixer: EQ, filter, CUE <span aria-hidden="true">🎛️</span></h3>
+              <p>3-band EQ with kills at 12 o'clock, filter, trims, vertical channel faders, PFL/CUE, a limiter and crossfader curves. Knobs you can grab with a MIDI controller.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img src="./shots/library-rows.webp" width="1700" height="304" alt="Two library rows: Glass Tide at 128.7 BPM in 8B and Neon Drift at 124.9 BPM in 8A, with energy, a colour-coded structure bar, the fit with deck A (relative key, same key), duration and a Ready state" loading="lazy" decoding="async"></div>
+              <h3>It finds beats, key and sections <span aria-hidden="true">🧠</span></h3>
+              <p>A worker finds the beat grid, downbeat, key (Camelot), loudness, energy per bar and the sections: intro, build, drop, break, outro. The library then tells you what fits the on-air deck: key relation, tempo delta, energy.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img src="./shots/guide-card.webp" width="722" height="546" alt="The LEARN guide card, step 3 of 10 of the phrase entry blend: listen to the 4-beat loop and confirm the kick sits on 1, with loop, beat and millisecond nudges and a highlighted Kick on 1 button" loading="lazy" decoding="async"></div>
+              <h3>LEARN mode, one step at a time <span aria-hidden="true">🎓</span></h3>
+              <p>Lesson 1 teaches the phrase-entry blend: exactly one control highlighted at a time, real engine state, sample-accurate ENTER, a score and a “Show me”. Badges when you finish.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img src="./shots/pads.webp" width="786" height="256" alt="PERFORM pads on deck A: eight hot cues, loop lengths from 1 to 32 beats with Exit, and beat jumps of minus four, minus one, plus one and plus four" loading="lazy" decoding="async"></div>
+              <h3>PERFORM pads <span aria-hidden="true">🥁</span></h3>
+              <p>Hot cues, loops, beat jump and sampler pads, all on the grid, with keyboard hints on every button and a keyboard map on <kbd>?</kbd>.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img class="art-top" src="./shots/palette.webp" width="900" height="739" alt="The command palette: a search box and a list mixing agent tools such as Get session and Propose transition with console actions such as Toggle the library, Audio setup, Open the Stage and Blackout" loading="lazy" decoding="async"></div>
+              <h3>A command palette for everything <span aria-hidden="true">⌨️</span></h3>
+              <p><kbd>⌘K</kbd> opens one search over the agent's tools and the console's own actions. The same registry the agent calls, one keystroke away for you.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img src="./shots/library-empty.webp" width="1600" height="267" alt="The empty library with a Load demo tracks button and the note: two original tracks, written and rendered on this machine, nothing is downloaded" loading="lazy" decoding="async"></div>
+              <h3>Demo tracks written by the page <span aria-hidden="true">🧪</span></h3>
+              <p>Press “Load demo tracks” and two original tunes are synthesised in the browser: Neon Drift (124 BPM, 8A) and Glass Tide (128 BPM, 8B). Same analysis as any file you drop in.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img src="./shots/look-field.webp" width="892" height="812" alt="The Kick Field look on the Stage: a disc of cyan particles orbiting a warm centre" loading="lazy" decoding="async"></div>
+              <h3>A Director for the stage <span aria-hidden="true">🎬</span></h3>
+              <p>Scene switches land on bar boundaries, the drop flashes under a strobe budget, a camera operator cuts between six shots on the bar, and follow-sections picks the look for each section.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art"><img class="art-bottom" src="./shots/look-crowd.webp" width="892" height="812" alt="The classic crowd on the Light Rig: glowing stick-figure dancers in amber and white under blue beams, with a floor reflection" loading="lazy" decoding="async"></div>
+              <h3>A crowd that dances <span aria-hidden="true">🕺</span></h3>
+              <p>Classic abstract dancers or pixel characters, four to ten per scene, with their own grooves, phones up in the break and a phrase wave across the floor. Saved per scene and in presets.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art feature-art-contain"><img src="./shots/stage-popover.webp" width="900" height="235" alt="The STAGE popover in the console: Open the Stage, Open a display, Preview (picture-in-picture) and Blackout, plus the presets Deep space, Ink haze, Warm terrain and Cube lattice" loading="lazy" decoding="async"></div>
+              <h3>Audience display + PiP <span aria-hidden="true">📺</span></h3>
+              <p>Send the stage to any screen with <kbd>F</kbd>, black it out with <kbd>Shift+B</kbd>, keep a picture-in-picture preview backstage. Frames and settings travel over a channel, never audio.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art feature-art-contain"><img src="./shots/csp-badge.webp" width="290" height="54" alt="The header badge reading Offline · local with a shield icon" loading="lazy" decoding="async"></div>
+              <h3>Provably offline <span aria-hidden="true">🔒</span></h3>
+              <p>A Content-Security-Policy with <code>connect-src 'self'</code>, no CDN, no telemetry. On load the page fires a fetch that must fail and waits for the violation event. The badge is the proof.</p>
+            </article>
+            <article class="feature" data-reveal>
+              <div class="feature-art feature-art-contain"><img src="./shots/midi-setup.webp" width="900" height="178" alt="The MIDI controller dialog: a Use a MIDI controller checkbox and the note that Web MIDI reads local hardware only, requests no sysex, sends nothing back and keeps the mapping in this browser" loading="lazy" decoding="async"></div>
+              <h3>Web MIDI, opt-in <span aria-hidden="true">🎹</span></h3>
+              <p>Plug in a controller, enable it, and learn any knob or fader with soft takeover. Mappings are kept per controller in this browser; nothing is sent back to the device.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── HORIZON ───────────────────────── -->
+      <section class="section band band-magenta" id="horizon" aria-labelledby="horizon-title">
+        <div class="wrap">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow eyebrow-magenta">05 / THE ROADMAP</p>
+            <h2 id="horizon-title"><span class="grad-text">Future features.</span>&nbsp;<span aria-hidden="true">🚀</span></h2>
+            <p class="section-lede">Where the project could go next. Tap a sketch to play it.</p>
+          </div>
+
+          <div class="road" data-reveal>
+            <div class="lane" data-when="now">
+              <p class="lane-head mono"><i class="dot dot-lime"></i> NOW · WORKS TODAY</p>
+              <ul class="stops" aria-label="What works today">
+                <li class="stop" data-idea="now">
+                  <button class="stop-art" type="button" aria-pressed="false" aria-label="Play the Mix + visualise sketch">
+                    <svg class="sketch" viewBox="0 0 200 96" aria-hidden="true">
+                      <g class="sk-wave sk-wave-a">
+                        <rect x="14" y="30" width="6" height="36" rx="3" /><rect x="26" y="22" width="6" height="52" rx="3" /><rect x="38" y="34" width="6" height="28" rx="3" /><rect x="50" y="18" width="6" height="60" rx="3" /><rect x="62" y="30" width="6" height="36" rx="3" />
+                      </g>
+                      <g class="sk-wave sk-wave-b">
+                        <rect x="132" y="30" width="6" height="36" rx="3" /><rect x="144" y="20" width="6" height="56" rx="3" /><rect x="156" y="34" width="6" height="28" rx="3" /><rect x="168" y="24" width="6" height="48" rx="3" /><rect x="180" y="32" width="6" height="32" rx="3" />
+                      </g>
+                      <rect class="sk-track" x="82" y="46" width="36" height="4" rx="2" />
+                      <rect class="sk-knob" x="94" y="38" width="12" height="20" rx="4" />
+                    </svg>
+                  </button>
+                  <h3><span aria-hidden="true">🎧</span> Mix + visualise</h3>
+                  <p>Two decks, a WebGPU stage and 13 agent tools. Alpha, rough edges included.</p>
+                </li>
+              </ul>
+              <p class="lane-note">
+                <a class="link-arrow" href="/">Open it and try this part <span aria-hidden="true">↗</span></a>
+              </p>
+            </div>
+
+            <div class="lane" data-when="next">
+              <p class="lane-head mono"><i class="dot dot-magenta"></i> NEXT · AFTER THAT</p>
+              <ul class="stops" aria-label="Ideas we would build first">
+                <li class="stop" data-idea="game">
+                  <button class="stop-art" type="button" aria-pressed="false" aria-label="Play the Learn by playing sketch">
+                    <svg class="sketch" viewBox="0 0 200 96" aria-hidden="true">
+                      <g class="sk-pads">
+                        <rect x="26" y="58" width="34" height="14" rx="7" /><rect x="70" y="58" width="34" height="14" rx="7" /><rect x="114" y="58" width="34" height="14" rx="7" /><rect x="158" y="58" width="34" height="14" rx="7" />
+                      </g>
+                      <circle class="sk-runner" cx="43" cy="34" r="10" />
+                    </svg>
+                  </button>
+                  <h3><span aria-hidden="true">🎮</span> Learn by playing</h3>
+                  <p>Beat-matching levels, scored by the real engine.</p>
+                </li>
+                <li class="stop" data-idea="sim">
+                  <button class="stop-art" type="button" aria-pressed="false" aria-label="Play the Rehearse the room sketch">
+                    <svg class="sketch" viewBox="0 0 200 96" aria-hidden="true">
+                      <g class="sk-crowd">
+                        <g><circle cx="34" cy="52" r="7" /><rect x="29" y="62" width="10" height="20" rx="5" /></g>
+                        <g><circle cx="66" cy="46" r="7" /><rect x="61" y="56" width="10" height="26" rx="5" /></g>
+                        <g><circle cx="98" cy="52" r="7" /><rect x="93" y="62" width="10" height="20" rx="5" /></g>
+                        <g><circle cx="130" cy="44" r="7" /><rect x="125" y="54" width="10" height="28" rx="5" /></g>
+                        <g><circle cx="162" cy="52" r="7" /><rect x="157" y="62" width="10" height="20" rx="5" /></g>
+                      </g>
+                      <ellipse class="sk-floor" cx="100" cy="86" rx="80" ry="5" />
+                    </svg>
+                  </button>
+                  <h3><span aria-hidden="true">🕺</span> Rehearse the room</h3>
+                  <p>A simulated crowd that shows where a transition loses the floor.</p>
+                </li>
+                <li class="stop" data-idea="live">
+                  <button class="stop-art" type="button" aria-pressed="false" aria-label="Play the Visuals for real venues sketch">
+                    <svg class="sketch" viewBox="0 0 200 96" aria-hidden="true">
+                      <rect class="sk-truss" x="30" y="14" width="140" height="6" rx="3" />
+                      <g class="sk-beams">
+                        <polygon points="52,20 40,84 72,84" /><polygon points="100,20 84,84 116,84" /><polygon points="148,20 128,84 160,84" />
+                      </g>
+                      <ellipse class="sk-floor" cx="100" cy="86" rx="76" ry="5" />
+                    </svg>
+                  </button>
+                  <h3><span aria-hidden="true">🪩</span> Visuals for real venues</h3>
+                  <p>Richer worlds, artist branding, controls built for the booth.</p>
+                </li>
+              </ul>
+            </div>
+
+            <div class="lane" data-when="far">
+              <p class="lane-head mono"><i class="dot dot-violet"></i> FAR · FURTHER OUT</p>
+              <ul class="stops" aria-label="Far-horizon research">
+                <li class="stop" data-idea="camera">
+                  <button class="stop-art" type="button" aria-pressed="false" aria-label="Play the A camera-aware crowd, opt-in sketch">
+                    <svg class="sketch" viewBox="0 0 200 96" aria-hidden="true">
+                      <g class="sk-figures">
+                        <g><circle cx="140" cy="42" r="7" /><rect x="135" y="52" width="10" height="26" rx="5" /></g>
+                        <g><circle cx="170" cy="48" r="7" /><rect x="165" y="58" width="10" height="20" rx="5" /></g>
+                      </g>
+                      <rect class="sk-body" x="22" y="32" width="76" height="46" rx="10" />
+                      <rect class="sk-body" x="44" y="24" width="24" height="10" rx="4" />
+                      <circle class="sk-lens" cx="60" cy="55" r="12" />
+                      <circle class="sk-scan" cx="60" cy="55" r="12" />
+                    </svg>
+                  </button>
+                  <h3><span aria-hidden="true">📷</span> A camera-aware crowd, opt-in</h3>
+                  <p>Movement, not faces. Consent first, no recording.</p>
+                </li>
+                <li class="stop" data-idea="agent">
+                  <button class="stop-art" type="button" aria-pressed="false" aria-label="Play the An agent that runs the night sketch">
+                    <svg class="sketch" viewBox="0 0 200 96" aria-hidden="true">
+                      <circle class="sk-ring" cx="86" cy="48" r="30" />
+                      <g class="sk-orbit">
+                        <circle cx="116" cy="48" r="6" /><circle cx="71" cy="74" r="6" /><circle cx="71" cy="22" r="6" />
+                      </g>
+                      <circle class="sk-core" cx="86" cy="48" r="11" />
+                      <rect class="sk-track" x="146" y="46" width="40" height="4" rx="2" />
+                      <rect class="sk-hand" x="158" y="38" width="12" height="20" rx="4" />
+                    </svg>
+                  </button>
+                  <h3><span aria-hidden="true">🤖</span> An agent that runs the night</h3>
+                  <p>It reads the room and proposes. You keep the fader, and the last word.</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── 3-IN-1 ───────────────────────── -->
+      <section class="section wrap" id="three" aria-labelledby="three-title">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">06 / THE NEXT FACE: 3-IN-1</p>
+          <h2 id="three-title">Next face: <span class="grad-text">make the tracks too.</span>&nbsp;<span aria-hidden="true">🎹</span></h2>
+          <p class="section-lede">
+            The plan: a third face for making and reshaping tracks, with an agent that <em>suggests</em>
+            instead of dictating. Producers need to see the track in front of them, not type commands into
+            the dark. Timeline, clips, stems, and ideas you can accept with one tap. A creative assistant for
+            music producers, in the same instrument that plays the result.
+          </p>
+        </div>
+        <div class="daw-window" data-reveal>
+          <div class="window-bar">
+            <span class="mono"><i class="dot dot-violet"></i> MIXERX / CREATE (CONCEPT)</span
+            ><span class="mono demo-tag">PLANNED · NOT BUILT</span>
+          </div>
+          <div class="daw-layout">
+            <svg class="daw-svg" viewBox="0 0 960 300" role="img" aria-labelledby="daw-svg-title">
+              <title id="daw-svg-title">A concept timeline with four lanes of clips and the agent's ghost suggestions</title>
+              <g class="daw-grid" stroke="#2a2544" stroke-width="1">
+                <path d="M120 0v300M240 0v300M360 0v300M480 0v300M600 0v300M720 0v300M840 0v300" />
+                <path d="M0 75h960M0 150h960M0 225h960" />
+              </g>
+              <g class="daw-lanes svg-mono-xs svg-dim">
+                <text x="12" y="44">DRUMS</text><text x="12" y="119">BASS</text><text x="12" y="194">PADS</text><text x="12" y="269">VOX</text>
+              </g>
+              <g class="daw-clips">
+                <rect x="124" y="14" width="352" height="46" rx="8" fill="#c8ff3d" />
+                <rect x="484" y="14" width="232" height="46" rx="8" fill="#c8ff3d" />
+                <rect x="244" y="89" width="352" height="46" rx="8" fill="#ff3fa4" />
+                <rect x="124" y="164" width="472" height="46" rx="8" fill="#8f6bff" />
+                <rect x="364" y="239" width="112" height="46" rx="8" fill="#5fd7ff" />
+              </g>
+              <g class="daw-ghosts">
+                <g data-ghost hidden><rect x="724" y="14" width="112" height="46" rx="8" /><text x="780" y="42" text-anchor="middle" class="svg-mono-xs">riser · 13–16</text></g>
+                <g data-ghost hidden><rect x="604" y="89" width="232" height="46" rx="8" /><text x="720" y="117" text-anchor="middle" class="svg-mono-xs">sidechain to kick</text></g>
+                <g data-ghost hidden><rect x="604" y="164" width="232" height="46" rx="8" /><text x="720" y="192" text-anchor="middle" class="svg-mono-xs">open the filter</text></g>
+                <g data-ghost hidden><rect x="484" y="239" width="232" height="46" rx="8" /><text x="600" y="267" text-anchor="middle" class="svg-mono-xs">vocal chop echo</text></g>
+              </g>
+              <line id="daw-playhead" x1="480" y1="0" x2="480" y2="300" stroke="#f5f0e6" stroke-width="2" />
+            </svg>
+            <div class="daw-side">
+              <p class="control-heading">Try the loop.</p>
+              <p class="daw-copy">
+                You ask. The agent sketches ideas as ghost clips, with a reason each. You keep the ones you
+                like. The rest never touch your project.
+              </p>
+              <div class="daw-buttons">
+                <button id="daw-ask" class="btn btn-violet btn-sm" type="button">Ask the agent <span aria-hidden="true">💡</span></button
+                ><button id="daw-accept" class="btn btn-lime btn-sm" type="button" disabled>Keep them <span aria-hidden="true">✓</span></button
+                ><button id="daw-reset" class="chip-button" type="button" disabled>Reset</button>
+              </div>
+              <p class="chat-status mono" id="daw-status" role="status" aria-live="polite">Your project. No suggestions yet.</p>
+              <ul class="check-list check-list-dim">
+                <li>Arrange with the agent: “make bars 13–16 lift”</li>
+                <li>Suggestions grounded in the same analysis the mixer uses</li>
+                <li>Mix the result on the decks. Show it on the stage.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="three-strip" data-reveal>
+          <span class="mono"><i class="dot dot-lime"></i> BUILT: MIX + VISUALISE</span>
+          <span class="three-dots" aria-hidden="true">·····················→</span>
+          <span class="mono grad-text">NEXT: CREATE + MIX + VISUALISE</span>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── STACK + PRIVACY ───────────────────────── -->
+      <section class="section band band-ink" id="stack" aria-labelledby="stack-title">
+        <div class="wrap">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow">07 / UNDER THE HOOD</p>
+            <h2 id="stack-title">No server. No cloud. <span class="grad-text">No uploads.</span>&nbsp;<span aria-hidden="true">🔧</span></h2>
+            <p class="section-lede">Everything runs in the browser: the audio on the audio thread, the visuals on the GPU, your library on your disk.</p>
+          </div>
+          <ul class="stack-grid" data-reveal aria-label="Technologies">
+            <li><b>Web Audio + AudioWorklet</b><span>deck, limiter and tap processors on the audio thread</span></li>
+            <li><b>WebGPU + WGSL</b><span>HDR targets, bloom, an FFT ocean, 512 dancing cubes</span></li>
+            <li><b>WebMCP</b><span><code>document.modelContext</code>, contextual registration, JSON Schema tools</span></li>
+            <li><b>Web Workers + IndexedDB</b><span>analysis off the main thread, library on-device</span></li>
+            <li><b>File System Access</b><span>your folders, never uploaded</span></li>
+            <li><b>Web MIDI</b><span>learn mode, soft takeover, per-controller maps</span></li>
+            <li><b>Window Management + PiP</b><span>the audience display on the screen you choose</span></li>
+            <li><b>React 19 + TypeScript</b><span>typed session contracts, View Transitions</span></li>
+          </ul>
+          <div class="privacy" data-reveal>
+            <div class="privacy-copy">
+              <p class="card-kicker"><span aria-hidden="true">🔒</span> PRIVACY, SAID PRECISELY</p>
+              <h3>Your files never leave this browser.</h3>
+              <p>
+                Not the files, not their paths, not the decoded samples, not the waveforms. Zero network
+                requests at runtime, no analytics, no CDN. The page proves it on every load instead of
+                promising it.
+              </p>
+              <p>
+                To be exact about what an agent <em>does</em> see: track titles and artists from your file
+                tags, plus analysis summaries. That's what musical reasoning needs. An external AI provider
+                handles that context under its own policies; WebMCP itself is not a privacy guarantee.
+              </p>
+              <a class="link-arrow" href="#faq-privacy">The honest privacy answer <span aria-hidden="true">↓</span></a>
+            </div>
+            <ul class="privacy-facts mono" aria-label="Privacy facts">
+              <li><b>connect-src</b> 'self'</li>
+              <li><b>telemetry</b> none</li>
+              <li><b>audio uploads</b> 0</li>
+              <li><b>agent sees</b> titles · BPM · key · sections</li>
+              <li><b>agent never sees</b> paths · URLs · audio</li>
+              <li><b>license</b> AGPL-3.0-or-later</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── 60 SECONDS ───────────────────────── -->
+      <section class="section wrap" id="tour" aria-labelledby="tour-title">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">08 / SIXTY SECONDS TO YOUR FIRST BLEND</p>
+          <h2 id="tour-title">Your first blend, <span class="grad-text">in five steps.</span>&nbsp;<span aria-hidden="true">⏱️</span></h2>
+        </div>
+        <ol class="steps" data-reveal>
+          <li><span class="step-num">1</span><h3>Load the demo tracks</h3><p>Two original tunes are written by the page itself and pushed through the real analysis.</p></li>
+          <li><span class="step-num">2</span><h3>Watch the numbers land</h3><p>About 124.9 and 128.7 BPM, keys 8A and 8B. Detected, not stored.</p></li>
+          <li><span class="step-num">3</span><h3>Set autonomy to Prepare</h3><p>Ask: “Prepare a phrase-aligned transition from Deck A to Deck B.”</p></li>
+          <li><span class="step-num">4</span><h3>Accept the card</h3><p>Hear deck B enter on the bar. Undo is one tap away if you change your mind.</p></li>
+          <li><span class="step-num">5</span><h3>Open the Stage</h3><p>Press STAGE, then “Open the Stage”, and watch the visuals follow the track's sections.</p></li>
+        </ol>
+        <p class="footnote wrap-narrow" data-reveal>
+          Desktop Chromium is the reference experience. The Stage needs WebGPU. Phones get an honest notice instead of a broken console.
+        </p>
+      </section>
+
+      <!-- ───────────────────────── FAQ ───────────────────────── -->
+      <section class="section band band-violet" id="faq" aria-labelledby="faq-title">
+        <div class="wrap faq-layout">
+          <div class="section-head" data-reveal>
+            <p class="eyebrow eyebrow-violet">09 / BEFORE YOU HIT PLAY</p>
+            <h2 id="faq-title">Straight answers.&nbsp;<span aria-hidden="true">🙋</span></h2>
+            <p class="section-lede">Early project. Big ideas. No fog machine on the facts.</p>
+          </div>
+          <div class="faq-list" data-reveal>
+            <details>
+              <summary>Is this a finished product?<span aria-hidden="true">+</span></summary>
+              <p>No. Mixerx is an early alpha built around a working two-deck mixer, an agent layer and a visual Stage. Expect rough edges. The roadmap and the 3-in-1 idea are directions, not available features or launch commitments.</p>
+            </details>
+            <details>
+              <summary>Do I need an AI agent to use it?<span aria-hidden="true">+</span></summary>
+              <p>No. The mixer and the Stage work by hand. The in-page local AI DJ agent uses deterministic rules. External agents connect through WebMCP where the browser supports it. WebMCP is the interface, not the model.</p>
+            </details>
+            <details id="faq-privacy">
+              <summary>Does my music leave my computer?<span aria-hidden="true">+</span></summary>
+              <p>The audio doesn't. Files, paths, samples and waveforms never leave the machine, and the app makes zero network requests at runtime. Tool results contain titles, artists and analysis summaries; an external AI provider may process that context under its own policies. Check that provider's settings before connecting an agent. The optional demo on this introduction page is hosted on YouTube and connects to Google only when you press play.</p>
+            </details>
+            <details>
+              <summary>Which browsers?<span aria-hidden="true">+</span></summary>
+              <p>Desktop Chromium (Chrome, Edge) is the reference: per-device audio output, folder pickers, window management and WebMCP live there. Firefox and Safari load the console with reduced routing and no Stage without WebGPU. The app says plainly what's missing.</p>
+            </details>
+            <details>
+              <summary>Are the pictures on this page real?<span aria-hidden="true">+</span></summary>
+              <p>Yes. Every screenshot is a capture of the alpha in Chromium: the console with the two demo tracks the page writes itself, and the Stage running its built-in synthetic test signal. The alpha demo is a recording with sound, played only on request. This page never opens a microphone or runs a model. The 3-in-1 timeline is the one drawing, and it is labelled as a concept.</p>
+            </details>
+            <details>
+              <summary>Flashes, motion, sensitivity?<span aria-hidden="true">+</span></summary>
+              <p>Use “Pause motion” at the top for the page animations. The demo recording contains moving visuals; use the video player's own pause control to stop it. The real Stage has its own reduced-motion, photosensitive-safe and blackout controls.</p>
+            </details>
+            <details>
+              <summary>What's the license?<span aria-hidden="true">+</span></summary>
+              <p>AGPL-3.0-or-later, with a separate commercial license available for closed or hosted use. Fonts are OFL, the FFT ocean adapts an MIT example, and no audio is bundled with the source.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ───────────────────────── CLOSING ───────────────────────── -->
+      <section class="closing wrap" aria-labelledby="closing-title">
+        <div class="closing-orb" aria-hidden="true"></div>
+        <p class="eyebrow">TWO DECKS · A VISUAL STAGE · 13 AGENT TOOLS</p>
+        <h2 id="closing-title">Open it and <span class="grad-text">press play.</span>&nbsp;<span aria-hidden="true">🎧</span></h2>
+        <p class="section-lede">No sign-up, no install, no upload. It opens in this browser.</p>
+        <div class="hero-actions">
+          <a class="btn btn-lime" href="/">Open Mixerx <span aria-hidden="true">↗</span></a
+          ><a class="btn btn-ghost" href="/stage?demo=1">Just show me the visuals</a>
+        </div>
+        <span class="mono closing-note">EARLY ALPHA · BEST ON DESKTOP · BRING YOUR OWN TRACKS</span>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <a class="logo" href="#top" aria-label="Back to the top of the page"><span class="logo-word">mixer<b>x</b></span></a>
+        <p>Made for the love of the next track. <span aria-hidden="true">✦</span> AGPL-3.0-or-later.</p>
+        <a href="#top">Back to the top ↑</a>
+      </div>
+    </footer>
+    <noscript
+      ><p class="wrap footnote">The story and the pictures work without JavaScript. Enable it for the crossfader, the tool board and the walkthrough.</p></noscript
+    >
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

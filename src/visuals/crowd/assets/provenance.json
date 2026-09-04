@@ -1,0 +1,40 @@
+[
+  {
+    "id": "codex",
+    "source": "webview/assets/codex-spritesheet-v6-BRBFriCM.webp",
+    "sourceSha256": "ac2990f24d55372411cebdc66a726e1fcbf5e80ec95378e2d25a6241abbedf88",
+    "outputSha256": "031ac6129ee42f5b6b05a7db9a0913183ebd127b137b216bd9b3ec5802dffbda",
+    "size": [768, 520],
+    "cell": [96, 104],
+    "rows": ["idle", "running-right", "running-left", "waving", "jumping"]
+  },
+  {
+    "id": "fireball",
+    "source": "webview/assets/fireball-spritesheet-v5-CcKkFG0_.webp",
+    "sourceSha256": "c1447dba809eb642e58aa213da5920eb27764e0f1df34a5651db091a1f79cbf3",
+    "outputSha256": "fdfac631ce17a4f678719def5c5a655675372eca09d14d4a022e7e2e5cd6c99b",
+    "size": [768, 520],
+    "cell": [96, 104],
+    "rows": ["idle", "running-right", "running-left", "waving", "jumping"]
+  },
+  {
+    "id": "hoots",
+    "source": "webview/assets/hoots-spritesheet-v8-hys0ZOs6.webp",
+    "sourceSha256": "62539958eb6ab2b23c6cb640c6ca9516a42a75e785203eee3eeff4d9c4581456",
+    "outputSha256": "6e9cca2340e417e9d32714c7013cfd0527cff465e6c00f5bddf907a4c1296195",
+    "size": [768, 520],
+    "cell": [96, 104],
+    "rows": ["idle", "running-right", "running-left", "waving", "jumping"]
+  },
+  {
+    "id": "dario",
+    "source": "https://codex-pets.net/assets/pets/v/1777693574152/dario/spritesheet.webp",
+    "page": "https://codex-pets.net/#/pets/dario",
+    "sourceSha256": "890c600ff7a9611b981c2bd81885730442f75abebf76a30234d59510d3a3f007",
+    "outputSha256": "3c9f88a05c8c1e827f5576ef5e3705b91506143f4b07b87864b010c1b1efa452",
+    "size": [768, 520],
+    "cell": [96, 104],
+    "rows": ["idle", "running-right", "running-left", "waving", "jumping"],
+    "encoding": "WebP quality 90, alpha preserved"
+  }
+]

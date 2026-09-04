@@ -1,0 +1,37 @@
+# Dependencies, builds, and tool caches.
+node_modules/
+dist/
+coverage/
+.vite/
+.cache/
+*.tsbuildinfo
+
+# Generated browser-test output.
+test-results/
+playwright-report/
+playwright/.cache/
+blob-report/
+
+# Local environment and credentials; keep sanitized examples.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Machine-specific editor and agent state.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.claude/
+.codex/
+.agents/
+.local/
+*.swp
+*.swo
+*.log
+*.tmp
+
+# Private audio, manifests, and exports. Only the setup guide is public.
+/local-audio/*
+!/local-audio/README.md
