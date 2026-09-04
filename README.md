@@ -11,11 +11,18 @@ WebMCP agent can work with the same tools. You choose how much it may do.
 
 [Open the app](https://mixerx.aiooup.chatgpt.site) ·
 [Explore the introduction](https://mixerx.aiooup.chatgpt.site/mixerx/) ·
-[Watch the demo on YouTube](https://youtu.be/OTJsOIhV-zM)
+[Watch the demo](#demo)
 
 The hosted app and introduction page are publicly accessible.
 
-![Mixerx Console with two decks, mixer, library, and an agent proposal](mixerx/shots/console-proposal.webp)
+## Demo
+
+A short tour of the Console, Cinematic scenes, and crowd overlays.
+
+https://github.com/user-attachments/assets/7f8001f4-b1d8-43ca-a610-b11de2ebc621
+
+[Watch on YouTube](https://youtu.be/OTJsOIhV-zM) ·
+[Recording details](docs/demo-video.md)
 
 ## What you can do
 
@@ -31,6 +38,33 @@ The hosted app and introduction page are publicly accessible.
   confirmation cards, and undo for supported changes.
 - **Use your setup:** configurable audio routing, optional MIDI input, keyboard
   shortcuts, and a command palette.
+
+## Screenshots
+
+### Console
+
+Two decks, waveforms, mixer controls, the local music library, and an AI DJ proposal.
+
+![Mixerx Console with two decks, orange and blue waveforms, mixer, library, and AI DJ agent](docs/screenshots/console.png)
+
+### Codex browser and WebMCP
+
+Mixerx running inside the Codex browser, with WebMCP tool activity for library
+search, deck loading, transition proposals, and Stage scene changes.
+
+![Mixerx inside the Codex browser alongside an agent conversation, with registered WebMCP tools, confirmed actions, and undo controls](docs/screenshots/codex-browser-webmcp.png)
+
+### Stage studio
+
+The Night Phoenix Cinematic scene with scene selection and crowd controls.
+
+![Mixerx Stage studio showing Night Phoenix, the scene library, and mixed crowd settings](docs/screenshots/stage-studio.png)
+
+### Audience display
+
+The Crystal Voyage Cinematic scene with a mixed crowd on the audience display.
+
+![Mixerx audience display showing a crystalline corridor with animated crowd characters](docs/screenshots/stage-display.png)
 
 ## Optional audio download
 
@@ -104,6 +138,4 @@ permission for some supplied artwork is not documented. Review
 
 ## License
 
-Project code is available under [AGPL-3.0-or-later](LICENSE). See [NOTICE](NOTICE)
-for the maintainer's commercial licensing option. Third-party software and artwork
-retain their own terms; the project license does not establish rights to those assets.
+Project code is available under [AGPL-3.0-or-later](LICENSE).
